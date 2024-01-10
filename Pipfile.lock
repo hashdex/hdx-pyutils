@@ -1,0 +1,29 @@
+{
+  "_meta": {
+    "hash": {
+      "sha256": "910ea9760e920e1e53da65450ffdedb0e6d9041ec004fd4afc83af04ec477245"
+    },
+    "pipfile-spec": 6,
+    "requires": {
+      "python_version": "3.8"
+    },
+    "sources": [
+      {
+        "name": "pypi",
+        "url": "https://pypi.org/simple",
+        "verify_ssl": true
+      }
+    ]
+  },
+  "default": {
+    "hdxpyutils": {
+      "editable": true,
+      "path": "."
+    },
+    "sanitized-package": {
+      "editable": true,
+      "path": "."
+    }
+  },
+  "develop": {}
+}
