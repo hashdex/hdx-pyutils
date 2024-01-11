@@ -2,6 +2,11 @@
 
 A python package containing utility functions.
 
+## Install Library
+```bash
+pip install git+https://github.com/hashdex/hdx-pyutils.git
+```
+
 ## Local development
 
 ```bash
