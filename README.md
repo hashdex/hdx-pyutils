@@ -1,41 +1,29 @@
-# hdx-pyutils
+# Pyutils Library
 
-A python package containing utility functions.
+## Description
 
-## Install Library
+The `pyutils` library is designed to simplify and enhance interaction with AWS (Amazon Web Services) services and facilitate external API calls. Developed to make operations and development tasks more convenient.
+
+## Installation
+
+To install `pyutils`, use the following command:
+
 ```bash
 pip install git+https://github.com/hashdex/hdx-pyutils.git
 ```
 
-## Local development
-
-```bash
-pipenv shell
-pipenv install '-e .'
-```
-
-Important: Whenever adding a new package add it to setup.py and run the command above, setup.py is the source of truth for the required packages. (If it's a devpackage it can be added directly to Pipfile)
-## Features
-
 ### Built-in packages
+This package comes with the following must-have packages:
 
-This package comes with the following *must-have* packages:
+* **requests**
+* **pandas**
+* **numpy**
+* **boto3**
+* **pyathena**
+* **s3fs**
+* **openpyxl**
 
-- requests
-- pandas
-- numpy
-- boto3
-- pyathena
-- s3fs
-- openpyxl
-
-You can use them normally as indicated below:
-
-```python
-import pandas as pd
-```
-
-### Utility Classes
+## Utility Classes
 
 - [SecretsManager](#secretsmanager)
   
@@ -67,8 +55,7 @@ value2 = secret['value2']
 import hdxpyutils
 
 dm = hdxpyutils.DatalakeManager(
-    key=secret['key'], 
-    secret=secret['secret'], 
+    "my-secret-name",
     s3_staging_dir='s3://bucket-name/data/staging-dir/'
 )
 
@@ -139,20 +126,13 @@ lm = hdxpyutils.LambdaManager()
 result = lm.invoke('function-name', { 'my-param': 'my-value' })
 ```
 
-
-
 ### InoaApiManager
 
 ```python
 import hdxpyutils
 
-iam = hdxpyutils.InoaApiManager(
-    api_url=secret['inoa_url'],
-    username=secret['username'], 
-    password=secret['password']
-)
+inoa = hdxpyutils.InoaApiManager("my-secret-name")
 
 # Inoa query.
-data = iam.call(module='funds', method='get_funds', params={})
+data = inoa.call(module='funds', method='get_funds', params={})
 ```
-
