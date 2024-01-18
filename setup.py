@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     packages=setuptools.find_packages(),
     install_requires=[
-        "requests==2.25.0",
+        "requests==2.31.0",
         "boto3==1.16.18",
         "numpy==1.22.0",
         "pandas==1.1.4",
