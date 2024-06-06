@@ -37,6 +37,10 @@ class InoaApiManager:
         logger.info(f"Response status code: {r.status_code}")
         logger.info(f"Response content (truncated): {r.content[:100]}...")
 
-        r.raise_for_status()
-        response = r.json()
-        return response
+        try:
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            error_msg = "Error: {} - Description: {}".format(e, r.text)
+            return error_msg
+        
+        return r.json()

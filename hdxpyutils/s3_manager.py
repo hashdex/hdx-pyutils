@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import logging
 from io import StringIO
+import requests
 from .utils import get_session
 
 logger = logging.getLogger(__name__)
@@ -154,6 +155,28 @@ class S3Manager:
         buffer.seek(0)
         self.client.upload_fileobj(buffer, bucket_name, path)
 
+    def send_email(self, subject: str, html: str, recipients: str, NOTIFIER_BASE_URL="", attachments=[]):
+        """Send an email.
+        
+        @param subject: Email subject.
+        @param html: Email body.
+        @param recipients: Email recipients.         
+        @param NOTIFIER_BASE_URL: NOTIFIER_BASE_URL.         
+        @param attachments: Paths of the attached files.         
+        """
+        url = f'{NOTIFIER_BASE_URL}/api/v1/notify/email'
+        data = {
+            'subject': subject,
+            'html': html,
+            'cc': recipients,
+        }
+        if attachments:
+            data['attachments'] = [self.upload_file(file) for file in attachments]
+
+        response = requests.post(url, json=data)
+        response.raise_for_status()
+        print('Email enviado!')
+        return True
 
 def get_client():
     """Singleton pattern for getting s3 client."""
