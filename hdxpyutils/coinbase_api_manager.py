@@ -1,7 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import requests
-import secrets_manager
 import hmac
 import base64
 from hashlib import sha256
@@ -9,7 +8,7 @@ import hdxpyutils
 
 class CoinbaseApi:
     
-    def __init__(self, secret_name):
+    def __init__(self, secret_name: str):
         """CoinbaseApi Constructor.
 
         @param secret: Secret name from AWS - Secret Manager.
@@ -31,7 +30,7 @@ class CoinbaseApi:
         sig = base64.b64encode(dig)
         return sig
     
-    def request(self, method: str, path: str, params: dict = {}):
+    def call(self, method: str, path: str, params: dict = {}):
         method = method.upper()
         timestamp = str(int(datetime.now().timestamp()))
         signature = self.generate_signature(timestamp, method, path, params)
