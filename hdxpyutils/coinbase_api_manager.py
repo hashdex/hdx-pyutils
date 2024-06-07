@@ -5,30 +5,29 @@ import secrets_manager
 import hmac
 import base64
 from hashlib import sha256
-
-
-sm = secrets_manager.SecretsManager()
-secret_coinbase = sm.get_secret('hdx-coinbase-hc5-viewonly')
-
-ACCESS_KEY = secret_coinbase['api_key']
-SIGNING_KEY = secret_coinbase['secret_key']
-PASSPHRASE = secret_coinbase['passphrase']
-PORTFOLIO_ID = secret_coinbase['portfolio_id']
+import hdxpyutils
 
 class CoinbaseApi:
     
-    def __init__(self):
+    def __init__(self, secret_name):
+        """CoinbaseApi Constructor.
+
+        @param secret: Secret name from AWS - Secret Manager.
+        """
+
+        secret_manager = hdxpyutils.SecretsManager()
+        self.secret = secret_manager.get_secret(secret_name)
+
         self.api = requests.Session()
         self.api.headers.update({'Accept': 'application/json'})
-        self.api.headers.update({'X-CB-ACCESS-KEY': ACCESS_KEY})
-        self.api.headers.update({'X-CB-ACCESS-PASSPHRASE': PASSPHRASE})
+        self.api.headers.update({'X-CB-ACCESS-KEY': self.secret['api_key']})
+        self.api.headers.update({'X-CB-ACCESS-PASSPHRASE': self.secret['passphrase']})
         self.base_url = 'https://api.prime.coinbase.com'
         
     def generate_signature(self, timestamp: str, method: str, path: str, params: dict):
         body = json.dumps(params) if (params != {} and method != 'GET') else ""
         s = f'{timestamp}{method}{path}{body}'
-        print(s)
-        dig = hmac.new(SIGNING_KEY.encode(), msg=s.encode(), digestmod=sha256).digest()
+        dig = hmac.new(self.secret['secret_key'].encode(), msg=s.encode(), digestmod=sha256).digest()
         sig = base64.b64encode(dig)
         return sig
     
