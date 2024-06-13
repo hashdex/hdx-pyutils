@@ -145,6 +145,10 @@ class S3Manager:
         """
         self.client.upload_file(filepath, bucket_name, path)
 
+        filename = filepath.split('/')[-1].split('\\')[-1]
+
+        return f's3://{bucket_name}//public//data//email//files//tmp//{filename}' 
+
     def upload_file_from_buffer(self, bucket_name: str, buffer: StringIO, path: str):
         """Upload a file from buffer to S3.
 
