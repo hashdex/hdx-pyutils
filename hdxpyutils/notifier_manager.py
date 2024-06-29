@@ -44,3 +44,11 @@ class NotifierManager:
         response = requests.post(url, json=data)
         response.raise_for_status()
         return True
+    
+    def get_contacts_from_topic(self, topic_id):
+        """Get the list of contacts from a topic."""
+
+        url = f'{self.NOTIFIER_BASE_URL}/mailing/topics/{topic_id}/contacts'
+        response = requests.get(url)
+        response.raise_for_status()
+        return [c['contactId'] for c in response.json()['data']]
