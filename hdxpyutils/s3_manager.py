@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import logging
 from io import StringIO
+import requests
 from .utils import get_session
 
 logger = logging.getLogger(__name__)
@@ -144,6 +145,10 @@ class S3Manager:
         """
         self.client.upload_file(filepath, bucket_name, path)
 
+        filename = filepath.split('/')[-1].split('\\')[-1]
+
+        return f's3://{bucket_name}//public//data//email//files//tmp//{filename}' 
+
     def upload_file_from_buffer(self, bucket_name: str, buffer: StringIO, path: str):
         """Upload a file from buffer to S3.
 
@@ -153,7 +158,7 @@ class S3Manager:
         """
         buffer.seek(0)
         self.client.upload_fileobj(buffer, bucket_name, path)
-
+        
 
 def get_client():
     """Singleton pattern for getting s3 client."""
